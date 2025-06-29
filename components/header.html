@@ -296,6 +296,75 @@
 </header>
 
 <style>
+
+  /* CAMBIOS EN EL CSS PARA HEADER FIXED/ESTÁTICO */
+
+/* Header personalizado - MODIFICADO para ser fixed */
+.custom-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 3px solid var(--primary-red);
+  position: fixed; /* CAMBIO: de sticky a fixed */
+  top: 0;
+  left: 0; /* AGREGADO: para asegurar posicionamiento */
+  right: 0; /* AGREGADO: para asegurar ancho completo */
+  width: 100%; /* AGREGADO: ancho completo */
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px); /* AGREGADO: efecto blur moderno */
+  -webkit-backdrop-filter: blur(10px); /* AGREGADO: compatibilidad Safari */
+}
+
+/* AGREGAR: Compensación para el body para evitar que el contenido se oculte bajo el header */
+body {
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+  padding-top: 80px; /* AGREGADO: ajusta según la altura de tu header */
+}
+
+/* OPCIONAL: Efecto de transparencia al hacer scroll */
+.custom-header.scrolled {
+  background: rgba(248, 249, 250, 0.95); /* Fondo semi-transparente */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* OPCIONAL: Animación suave para transiciones */
+.custom-header {
+  transition: all 0.3s ease;
+}
+
+/* Ajuste para mega menus con header fixed */
+.liga-nacional-mega-menu,
+.estadisticas-mega-menu {
+  position: fixed !important; /* CAMBIO: de absolute a fixed */
+  top: 80px !important; /* AJUSTAR: según la altura exacta de tu header */
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  background: white;
+  padding: 30px 0;
+  margin: 0;
+  transform: none !important;
+  z-index: 999; /* Un nivel menos que el header */
+}
+
+/* RESPONSIVE: Ajustes para móviles */
+@media (max-width: 768px) {
+  body {
+    padding-top: 70px; /* AJUSTAR: menor altura en móvil */
+  }
+  
+  .liga-nacional-mega-menu,
+  .estadisticas-mega-menu {
+    top: 70px !important; /* AJUSTAR: según altura del header en móvil */
+  }
+}
+
   /* Estilos para el Mega Menu Liga Nacional */
   .liga-nacional-mega-menu {
     position: absolute !important;
@@ -661,5 +730,76 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 150);
     });
   }
+
+   // Función para cerrar el modal de Liga Nacional
+  function closeLigaNacionalModal() {
+    if (ligaNacionalMenu) {
+      ligaNacionalMenu.style.display = "none";
+      ligaNacionalMenu.style.opacity = "0";
+      ligaNacionalMenu.style.visibility = "hidden";
+      ligaNacionalMenu.style.transform = "translateY(-10px)";
+    }
+  }
+
+  // Función para cerrar el modal de Estadísticas
+  function closeEstadisticasModal() {
+    if (estadisticasMenu) {
+      estadisticasMenu.style.display = "none";
+      estadisticasMenu.style.opacity = "0";
+      estadisticasMenu.style.visibility = "hidden";
+      estadisticasMenu.style.transform = "translateY(-10px)";
+    }
+  }
+
+  // Cerrar modal de Liga Nacional al hacer clic en el enlace principal
+  if (ligaNacionalDropdown) {
+    ligaNacionalDropdown.addEventListener("click", function(e) {
+      // Si el modal está visible, lo cerramos
+      if (ligaNacionalMenu && ligaNacionalMenu.style.display === "block") {
+        e.preventDefault(); // Prevenir la navegación
+        closeLigaNacionalModal();
+      }
+      // Si el modal no está visible, permitir la navegación normal
+    });
+  }
+
+  // Cerrar modal de Estadísticas al hacer clic en el enlace principal
+  if (estadisticasDropdown) {
+    estadisticasDropdown.addEventListener("click", function(e) {
+      // Si el modal está visible, lo cerramos
+      if (estadisticasMenu && estadisticasMenu.style.display === "block") {
+        e.preventDefault(); // Prevenir la navegación
+        closeEstadisticasModal();
+      }
+      // Si el modal no está visible, permitir la navegación normal
+    });
+  }
+
+  // OPCIONAL: Cerrar modales al hacer clic fuera de ellos
+  document.addEventListener("click", function(e) {
+    // Verificar si el clic fue fuera del dropdown de Liga Nacional
+    if (ligaNacionalMenu && ligaNacionalMenu.style.display === "block") {
+      const ligaNacionalParent = ligaNacionalDropdown?.parentElement;
+      if (!ligaNacionalParent?.contains(e.target) && !ligaNacionalMenu.contains(e.target)) {
+        closeLigaNacionalModal();
+      }
+    }
+
+    // Verificar si el clic fue fuera del dropdown de Estadísticas
+    if (estadisticasMenu && estadisticasMenu.style.display === "block") {
+      const estadisticasParent = estadisticasDropdown?.parentElement;
+      if (!estadisticasParent?.contains(e.target) && !estadisticasMenu.contains(e.target)) {
+        closeEstadisticasModal();
+      }
+    }
+  });
+
+  // OPCIONAL: Cerrar modales con la tecla ESC
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+      closeLigaNacionalModal();
+      closeEstadisticasModal();
+    }
+  });
 });
 </script>
