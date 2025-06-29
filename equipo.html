@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Antigua GFC | Planeta Sportia</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+
+    <link href="./css/index.css" rel="stylesheet" />
+
+    <style>
+      /* Estilos específicos para página de equipo */
+      .team-hero {
+        background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+        color: white;
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .team-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>') center/200px;
+        opacity: 0.3;
+      }
+
+      .team-hero .container {
+        position: relative;
+        z-index: 2;
+      }
+
+      .team-logo-hero {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      }
+
+      .team-name-hero {
+        font-size: 3rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 15px;
+      }
+
+      .follow-btn {
+        background: white;
+        color: #22C55E;
+        border: 2px solid white;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .follow-btn:hover {
+        background: transparent;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255,255,255,0.3);
+      }
+
+      .breadcrumb-section {
+        background: #f8f9fa;
+        padding: 15px 0;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .breadcrumb-item a {
+        color: var(--primary-red);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .breadcrumb-item.active {
+        color: #6c757d;
+      }
+
+      .section-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid var(--primary-red);
+        position: relative;
+      }
+
+      .section-title::before,
+      .section-title::after {
+        content: "/";
+        color: var(--primary-red);
+        margin: 0 15px;
+      }
+
+      .news-card-team {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e9ecef;
+      }
+
+      .news-card-team:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(34, 197, 94, 0.2);
+      }
+
+      .news-image-team {
+        height: 200px;
+        background: linear-gradient(45deg, #f8f9fa, #dee2e6);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .news-image-team.featured {
+        height: 300px;
+      }
+
+      .news-image-team img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .news-card-team:hover .news-image-team img {
+        transform: scale(1.05);
+      }
+
+      .team-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #22C55E;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .news-content-team {
+        padding: 20px;
+      }
+
+      .news-title-team {
+        color: #333;
+        font-weight: bold;
+        font-size: 1.1rem;
+        line-height: 1.4;
+        margin-bottom: 15px;
+        transition: color 0.3s ease;
+      }
+
+      .news-card-team:hover .news-title-team {
+        color: #22C55E;
+      }
+
+      .news-meta-team {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 15px;
+        border-top: 1px solid #e9ecef;
+        font-size: 13px;
+      }
+
+      .news-author-team {
+        color: #22C55E;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .news-date-team {
+        color: #6c757d;
+        font-style: italic;
+      }
+
+      .popular-section {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 25px;
+        position: sticky;
+        top: 100px;
+      }
+
+      .popular-item {
+        background: white;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .popular-item:hover {
+        background: #fff5f5;
+        border-color: var(--primary-red);
+        transform: translateX(8px);
+        box-shadow: 0 4px 15px rgba(255, 0, 0, 0.1);
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .popular-image {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(45deg, #f8f9fa, #dee2e6);
+        border-radius: 10px;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .popular-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .popular-content h6 {
+        color: #333;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        line-height: 1.3;
+        transition: color 0.3s ease;
+      }
+
+      .popular-item:hover .popular-content h6 {
+        color: var(--primary-red);
+      }
+
+      .popular-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        gap: 10px;
+      }
+
+      .popular-team {
+        color: #22C55E;
+        font-weight: 600;
+      }
+
+      .popular-category {
+        color: #6c757d;
+      }
+
+      .load-more-btn {
+        background: var(--primary-red);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        display: block;
+        margin: 40px auto 0;
+      }
+
+      .load-more-btn:hover {
+        background: var(--dark-red);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .team-name-hero {
+          font-size: 2rem;
+        }
+
+        .team-logo-hero {
+          width: 100px;
+          height: 100px;
+        }
+
+        .section-title {
+          font-size: 1.5rem;
+        }
+
+        .news-image-team {
+          height: 180px;
+        }
+
+        .news-image-team.featured {
+          height: 220px;
+        }
+
+        .popular-item {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .popular-image {
+          width: 100%;
+          height: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Container para Header -->
+    <div id="header-container">
+      <!-- Loading placeholder -->
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="min-height: 80px"
+      >
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Cargando header...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Section del Equipo -->
+    <section class="team-hero">
+      <div class="container text-center">
+        <div class="team-logo-hero">
+          <img
+            src="https://via.placeholder.com/120x120/22C55E/FFFFFF?text=ANT"
+            alt="Antigua GFC Logo"
+            style="width: 80%; height: 80%; object-fit: cover; border-radius: 30%;"
+          />
+        </div>
+        <h1 class="team-name-hero">Antigua GFC</h1>
+        <!-- <p class="lead mb-4">Guatefutbol.com > Antigua GFC</p>-->
+        <!-- <a href="#" class="follow-btn">
+          <i class="bi bi-plus-circle"></i>
+          Seguir
+        </a>-->
+      </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <!-- <div class="breadcrumb-section">
+      <div class="container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="liga-nacional.html">Liga Nacional</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Antigua GFC</li>
+          </ol>
+        </nav>
+      </div>
+    </div>-->
+
+    <!-- Main Content -->
+    <main class="container my-5">
+      <div class="row">
+        <!-- News Section -->
+        <div class="col-lg-8">
+          <div class="mb-5">
+            <h2 class="section-title">Últimas noticias de Antigua GFC</h2>
+
+            <!-- Featured News -->
+            <article class="news-card-team mb-4">
+              <div class="news-image-team featured">
+                <span class="team-badge">GUATEMALA</span>
+                <img
+                  src="https://via.placeholder.com/800x300/22C55E/FFFFFF?text=REGRESA+A+GUATEMALA"
+                  alt="¡Regresa a Guatemala!"
+                  onerror="this.style.display='none';"
+                />
+              </div>
+              <div class="news-content-team">
+                <h3 class="news-title-team">¡Regresa a Guatemala!</h3>
+                <p class="text-muted mb-3">
+                  SACATEPÉQUEZ. El delantero costarricense Jostin Daly vuelve a Guatemala para jugar en...
+                </p>
+                <div class="news-meta-team">
+                  <span class="news-author-team">
+                    <i class="bi bi-person-circle"></i>
+                    Jonathan Tamayac
+                  </span>
+                  <!-- <span class="news-date-team">junio 26, 2025</span>-->
+                </div>
+              </div>
+            </article>
+
+            <!-- Additional News Grid -->
+            <div class="row g-4">
+              <div class="col-md-6">
+                <article class="news-card-team">
+                  <div class="news-image-team">
+                    <span class="team-badge">ANTIGUA</span>
+                    <img
+                      src="https://via.placeholder.com/400x200/16A34A/FFFFFF?text=PRETEMPORADA"
+                      alt="Pretemporada intensa"
+                      onerror="this.style.display='none';"
+                    />
+                  </div>
+                  <div class="news-content-team">
+                    <h4 class="news-title-team">
+                      VIDEO | Osorio: Es una pretemporada intensa para conseguir los objetivos
+                    </h4>
+                    <div class="news-meta-team">
+                      <span class="news-author-team">
+                        <i class="bi bi-person-circle"></i>
+                        Jonathan Tamayac
+                      </span>
+                     <!--  <span class="news-date-team">junio 24, 2025</span>-->
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="col-md-6">
+                <article class="news-card-team">
+                  <div class="news-image-team">
+                    <span class="team-badge">ANTIGUA</span>
+                    <img
+                      src="https://via.placeholder.com/400x200/059669/FFFFFF?text=ESTADIOS+COPA"
+                      alt="Estadios Copa Centroamericana"
+                      onerror="this.style.display='none';"
+                    />
+                  </div>
+                  <div class="news-content-team">
+                    <h4 class="news-title-team">
+                      Estadios para la Copa Centroamericana aún no son confirmados
+                    </h4>
+                    <div class="news-meta-team">
+                      <span class="news-author-team">
+                        <i class="bi bi-person-circle"></i>
+                        Jonathan Tamayac
+                      </span>
+                      <!-- <span class="news-date-team">junio 10, 2025</span>-->
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="col-md-12">
+                <article class="news-card-team">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <div class="news-image-team">
+                        <span class="team-badge">COPA CENTROAMERICANA</span>
+                        <img
+                          src="https://via.placeholder.com/300x200/DC2626/FFFFFF?text=CONCACAF+2025"
+                          alt="Copa Centroamericana Concacaf 2025"
+                          onerror="this.style.display='none';"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="news-content-team">
+                        <h4 class="news-title-team">
+                          Concacaf anuncia el calendario para la Copa Centroamericana Concacaf 2025
+                        </h4>
+                        <p class="text-muted mb-3">
+                          Miami, FL (martes 10 de junio 2025) — Concacaf ha anunciado el calendario...
+                        </p>
+                        <div class="news-meta-team">
+                          <span class="news-author-team">
+                            <i class="bi bi-person-circle"></i>
+                            Jonathan Tamayac
+                          </span>
+                          <!-- <span class="news-date-team">junio 10, 2025</span>-->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <!-- Load More Button -->
+            <button class="load-more-btn">
+              <i class="bi bi-arrow-clockwise me-2"></i>
+              Mostrar más
+            </button>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+          <div class="popular-section">
+            <h3 class="text-danger fw-bold text-center mb-4 border-bottom border-danger border-2 pb-2">
+              Lo más popular de la semana
+            </h3>
+
+            <a href="#" class="popular-item">
+              <div class="popular-image">
+                <img
+                  src="https://via.placeholder.com/80x80/22C55E/FFFFFF?text=ANT"
+                  alt="¡Regresa a Guatemala!"
+                  onerror="this.style.display='none';"
+                />
+              </div>
+              <div class="popular-content">
+                <h6>¡Regresa a Guatemala!</h6>
+                <div class="popular-meta">
+                  <span class="popular-team">Antigua GFC</span>
+                  <!-- <span class="popular-category">Destacado</span>-->
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="popular-item">
+              <div class="popular-image">
+                <img
+                  src="https://via.placeholder.com/80x80/EAB308/000000?text=XEL"
+                  alt="Salida sensible en Xelajú MC"
+                  onerror="this.style.display='none';"
+                />
+              </div>
+              <div class="popular-content">
+                <h6>Salida sensible en Xelajú MC</h6>
+                <div class="popular-meta">
+                  <span class="popular-team">Xelajú MC</span>
+                  <!-- <span class="popular-category">Destacado</span>-->
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="popular-item">
+              <div class="popular-image">
+                <img
+                  src="https://via.placeholder.com/80x80/FFD700/000000?text=XIN"
+                  alt="Xinabajul recibe el primer revés por parte del TAS"
+                  onerror="this.style.display='none';"
+                />
+              </div>
+              <div class="popular-content">
+                <h6>Xinabajul recibe el primer revés por parte del TAS</h6>
+                <div class="popular-meta">
+                  <span class="popular-team">Primera División</span>
+                  <!-- <span class="popular-category">Destacado</span>-->
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="popular-item">
+              <div class="popular-image">
+                <img
+                  src="https://via.placeholder.com/80x80/F59E0B/FFFFFF?text=MAR"
+                  alt="Otro exjugador de Xinabajul se une a Deportivo Marquense"
+                  onerror="this.style.display='none';"
+                />
+              </div>
+              <div class="popular-content">
+                <h6>Otro exjugador de Xinabajul se une a Deportivo Marquense</h6>
+                <div class="popular-meta">
+                  <span class="popular-team">Marquense</span>
+                  <!-- <span class="popular-category">Primera División</span>-->
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Container para Footer -->
+    <div id="footer-container">
+      <!-- Loading placeholder -->
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="min-height: 100px"
+      >
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Cargando footer...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Component Loader -->
+    <script src="./js/component-loader.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          // Crear instancia del cargador de componentes
+          const componentLoader = new ComponentLoader();
+
+          // Cargar layout estándar con mejor manejo de errores
+          await componentLoader.loadStandardLayout();
+
+          // Inicializar funcionalidades específicas de la página
+          initializeTeamPageFeatures();
+
+          console.log("✅ Página de equipo inicializada correctamente");
+        } catch (error) {
+          console.error("❌ Error al inicializar la página:", error);
+          showErrorFallback();
+        }
+      });
+
+      function initializeTeamPageFeatures() {
+        // Configurar interacciones de tarjetas de noticias
+        setupTeamNewsCardInteractions();
+
+        // Configurar botón de seguir
+        setupFollowButton();
+
+        // Configurar botón "Mostrar más"
+        setupLoadMoreButton();
+
+        // Configurar manejo de imágenes
+        setupImageHandling();
+
+        // Configurar funcionalidades adicionales
+        setupAdditionalFeatures();
+      }
+
+      function setupTeamNewsCardInteractions() {
+        const newsCards = document.querySelectorAll(".news-card-team");
+        newsCards.forEach((card) => {
+          card.addEventListener("mouseenter", () => {
+            card.style.transform = "translateY(-8px)";
+            card.style.transition = "transform 0.3s ease";
+          });
+
+          card.addEventListener("mouseleave", () => {
+            card.style.transform = "translateY(0)";
+          });
+
+          card.addEventListener("click", (e) => {
+            if (!e.target.closest("a")) {
+              const title = card.querySelector(".news-title-team");
+              if (title) {
+                showNotification(`Abriendo: ${title.textContent}`, "info");
+              }
+            }
+          });
+        });
+      }
+
+      function setupFollowButton() {
+        const followBtn = document.querySelector(".follow-btn");
+        if (followBtn) {
+          followBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const icon = followBtn.querySelector("i");
+            const text = followBtn.querySelector("text") || followBtn;
+            
+            if (followBtn.innerHTML.includes("Seguir")) {
+              followBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Siguiendo';
+              followBtn.style.background = "#22C55E";
+              followBtn.style.color = "white";
+              showNotification("Ahora sigues a Antigua GFC", "success");
+            } else {
+              followBtn.innerHTML = '<i class="bi bi-plus-circle"></i> Seguir';
+              followBtn.style.background = "white";
+              followBtn.style.color = "#22C55E";
+              showNotification("Has dejado de seguir a Antigua GFC", "info");
+            }
+          });
+        }
+      }
+
+      function setupLoadMoreButton() {
+        const loadMoreBtn = document.querySelector(".load-more-btn");
+        if (loadMoreBtn) {
+          loadMoreBtn.addEventListener("click", () => {
+            loadMoreBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-2 spinner-border spinner-border-sm"></i> Cargando...';
+            loadMoreBtn.disabled = true;
+            
+            // Simular carga
+            setTimeout(() => {
+              showNotification("Más noticias cargadas", "success");
+              loadMoreBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-2"></i> Mostrar más';
+              loadMoreBtn.disabled = false;
+            }, 2000);
+          });
+        }
+      }
+
+      function setupImageHandling() {
+        const images = document.querySelectorAll("img");
+        images.forEach((img) => {
+          img.addEventListener("error", () => {
+            if (!img.classList.contains("error-handled")) {
+              img.classList.add("error-handled");
+              img.style.display = "none";
+
+              /*const placeholder = document.createElement("div");
+              placeholder.className = "bg-light d-flex align-items-center justify-content-center";
+              placeholder.style.cssText = "height: 100%; color: #6c757d; border-radius: 0.375rem;";
+              placeholder.innerHTML = '<i class="bi bi-image fs-1"></i>';
+              img.parentNode.appendChild(placeholder);*/
+            }
+          });
+
+          if (!img.getAttribute("loading")) {
+            img.setAttribute("loading", "lazy");
+          }
+        });
+      }
+
+      function setupAdditionalFeatures() {
+        // Configurar elementos populares
+        const popularItems = document.querySelectorAll(".popular-item");
+        popularItems.forEach((item) => {
+          item.addEventListener("click", (e) => {
+            e.preventDefault();
+            const title = item.querySelector("h6").textContent;
+            showNotification(`Navegando a: ${title}`, "info");
+          });
+        });
+
+        // Configurar breadcrumb
+        const breadcrumbLinks = document.querySelectorAll(".breadcrumb-item a");
+        breadcrumbLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            showNotification(`Navegando a: ${link.textContent}`, "info");
+          });
+        });
+      }
+
+      function showErrorFallback() {
+        const headerContainer = document.getElementById("header-container");
+        const footerContainer = document.getElementById("footer-container");
+
+        if (headerContainer && headerContainer.innerHTML.includes("spinner")) {
+          headerContainer.innerHTML = `
+            <div class="alert alert-warning text-center">
+              <i class="bi bi-exclamation-triangle"></i>
+              Error al cargar el header. <a href="#" onclick="location.reload()">Recargar página</a>
+            </div>
+          `;
+        }
+
+        if (footerContainer && footerContainer.innerHTML.includes("spinner")) {
+          footerContainer.innerHTML = `
+            <footer class="bg-dark text-white text-center py-3">
+              <div class="container">
+                <small>© 2025 Planeta Sportia. Todos los derechos reservados.</small>
+              </div>
+            </footer>
+          `;
+        }
+      }
+
+      function showNotification(message, type = "info") {
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText = "top: 20px; right: 20px; z-index: 9999; min-width: 300px;";
+        alertDiv.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alertDiv);
+
+        setTimeout(() => {
+          if (alertDiv.parentNode) {
+            alertDiv.remove();
+          }
+        }, 5000);
+      }
+
+      // Configurar smooth scrolling
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+
+      // Configurar progreso de scroll (opcional)
+      function setupScrollProgress() {
+        const progressBar = document.createElement("div");
+        progressBar.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 0%;
+          height: 3px;
+          background: #22C55E;
+          z-index: 9999;
+          transition: width 0.1s ease;
+        `;
+        document.body.appendChild(progressBar);
+
+        window.addEventListener("scroll", () => {
+          const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+          const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const scrolled = (winScroll / height) * 100;
+          progressBar.style.width = scrolled + "%";
+        });
+      }
+
+      // Inicializar progreso de scroll
+      setupScrollProgress();
+    </script>
+  </body>
+</html>

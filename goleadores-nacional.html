@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabla de Goleadores - Liga Nacional | Planeta Sportia</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+
+    <link href="./css/index.css" rel="stylesheet" />
+
+    <style>
+      /* Estilos específicos para tabla de goleadores */
+      .positions-hero {
+        background: black;
+        color: red;
+        padding: 60px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .positions-hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>')
+          center/150px;
+        opacity: 0.3;
+      }
+
+      .positions-hero .container {
+        position: relative;
+        z-index: 2;
+      }
+
+      .positions-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+      }
+
+      .controls-section {
+        background: #f8f9fa;
+        padding: 30px 0;
+        border-bottom: 3px solid var(--primary-red);
+      }
+
+      .control-group {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .control-label {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .form-select-custom {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+      }
+
+      .form-select-custom:focus {
+        border-color: var(--primary-red);
+        box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+      }
+
+      .table-section {
+        background: white;
+        border-radius: 15px;
+        margin: 30px 0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .table-header {
+        background: linear-gradient(
+          135deg,
+          var(--dark-red) 0%,
+          var(--primary-red) 100%
+        );
+        color: white;
+        padding: 20px 30px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .refresh-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+
+      .refresh-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .positions-table {
+        margin: 0;
+        border: none;
+      }
+
+      .positions-table thead {
+        background: #f8f9fa;
+      }
+
+      .positions-table th {
+        border: none;
+        padding: 15px 12px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .positions-table td {
+        border: none;
+        border-bottom: 1px solid #f1f5f9;
+        padding: 15px 12px;
+        vertical-align: middle;
+        text-align: center;
+      }
+
+      .positions-table tbody tr {
+        transition: all 0.3s ease;
+      }
+
+      .positions-table tbody tr:hover {
+        background: #f8fafc;
+        transform: translateX(3px);
+      }
+
+      .position-number {
+        background: var(--primary-red);
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin: 0 auto;
+      }
+
+      .player-name {
+        font-weight: 600;
+        color: #334155;
+        font-size: 1rem;
+        text-align: left;
+        padding-left: 15px;
+      }
+
+      .goals-highlight {
+        background: linear-gradient(45deg, var(--dark-red), var(--primary-red));
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      .stat-value {
+        font-weight: 600;
+        color: #475569;
+      }
+
+      .team-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .team-logo {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: var(--primary-red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.7rem;
+        font-weight: bold;
+      }
+
+      .team-name-small {
+        font-size: 0.9rem;
+        color: #64748b;
+        font-weight: normal;
+      }
+
+      /* Colores especiales para posiciones */
+      .position-golden .position-number {
+        background: linear-gradient(45deg, #ffd700, #ffa500);
+        color: #333;
+      }
+
+      .position-silver .position-number {
+        background: linear-gradient(45deg, #c0c0c0, #a0a0a0);
+        color: #333;
+      }
+
+      .position-bronze .position-number {
+        background: linear-gradient(45deg, #cd7f32, #b8860b);
+        color: white;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .positions-title {
+          font-size: 2rem;
+        }
+
+        .positions-table th,
+        .positions-table td {
+          padding: 10px 8px;
+          font-size: 0.85rem;
+        }
+
+        .team-info {
+          gap: 8px;
+        }
+
+        .player-name {
+          font-size: 0.9rem;
+        }
+
+        .table-header {
+          font-size: 1.2rem;
+          padding: 15px 20px;
+        }
+      }
+
+      /* Animaciones */
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .table-section {
+        animation: slideIn 0.5s ease-out;
+      }
+
+      .positions-table tbody tr:nth-child(even) {
+        background: #fafbfc;
+      }
+
+      /* Botón Ver Autogoles */
+      .view-autogoles-btn {
+        background: #343a40;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+      }
+
+      .view-autogoles-btn:hover {
+        background: #495057;
+        transform: translateY(-2px);
+      }
+
+      /* Estadísticas totales */
+      .stats-counter {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: right;
+        border: 2px solid #e9ecef;
+      }
+
+      .stats-counter .counter-icon {
+        color: var(--primary-red);
+        font-size: 1.2rem;
+        margin-right: 5px;
+      }
+
+      .stats-counter .counter-number {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Container para Header -->
+    <div id="header-container">
+      <!-- Loading placeholder -->
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="min-height: 80px"
+      >
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Cargando header...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="positions-hero">
+      <div class="container text-center">
+        <h1 class="positions-title">Tabla de Goleadores</h1>
+        <p class="lead mb-0">Liga Nacional de Guatemala - Clausura 2025</p>
+      </div>
+    </section>
+
+    <!-- Controles -->
+    <section class="controls-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <div class="control-group">
+              <label class="control-label">Campeonato</label>
+              <select
+                class="form-select form-select-custom"
+                id="campeonatoSelect"
+              >
+                <option value="clausura2025" selected>Clausura 2025</option>
+                <option value="apertura2025">Apertura 2025</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container my-4">
+      <!-- Estadísticas generales -->
+      <!-- <div class="stats-counter">
+        <i class="bi bi-graph-up counter-icon"></i>
+        <span class="counter-number" id="totalCounter">81</span> registros
+      </div> -->
+
+      <!-- Botón Ver Autogoles -->
+      <!--  <div class="text-center">
+        <button class="view-autogoles-btn" onclick="toggleAutogoles()">
+          Ver Autogoles
+        </button>
+      </div> -->
+
+      <!-- Tabla de Goleadores -->
+      <!-- Tabla de Goleadores -->
+      <div class="table-section">
+        <div class="table-header">
+          <div>
+            <i class="bi bi-trophy-fill me-3"></i>Tabla de Goleadores - Clausura
+            2025
+          </div>
+          <!--<button class="refresh-btn" onclick="refreshTable()">
+            <i class="bi bi-arrow-clockwise me-1"></i>Actualizar
+          </button> -->
+        </div>
+
+        <div class="table-responsive">
+          <table class="table positions-table">
+            <thead>
+              <tr>
+                <th>POS</th>
+                <th>JUGADOR</th>
+                <th>EDAD</th>
+                <th>EQUIPO</th>
+                <th>G</th>
+                <th>MJ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="position-golden">
+                <td>
+                  <div class="position-number">1</div>
+                </td>
+                <td>
+                  <span class="player-name">Martínez Vargas Nicolás Iván</span>
+                </td>
+                <td class="stat-value">34</td>
+                <td class="stat-value">Mixco</td>
+                <td><span class="goals-highlight">11</span></td>
+                <td class="stat-value">1642</td>
+              </tr>
+
+              <tr class="position-silver">
+                <td>
+                  <div class="position-number">2</div>
+                </td>
+                <td>
+                  <span class="player-name"
+                    >Lemus De Paz Erick Diego Alejandro</span
+                  >
+                </td>
+                <td class="stat-value">24</td>
+                <td class="stat-value">Comunicaciones</td>
+                <td><span class="goals-highlight">7</span></td>
+                <td class="stat-value">1466</td>
+              </tr>
+
+              <tr class="position-bronze">
+                <td>
+                  <div class="position-number">3</div>
+                </td>
+                <td>
+                  <span class="player-name">Correa Villero José Erick</span>
+                </td>
+                <td class="stat-value">32</td>
+                <td class="stat-value">Malacateco</td>
+                <td><span class="goals-highlight">6</span></td>
+                <td class="stat-value">504</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">4</div>
+                </td>
+                <td>
+                  <span class="player-name"
+                    >Martínez Castellanos Luis Fernando</span
+                  >
+                </td>
+                <td class="stat-value">33</td>
+                <td class="stat-value">Malacateco</td>
+                <td><span class="goals-highlight">6</span></td>
+                <td class="stat-value">978</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">5</div>
+                </td>
+                <td>
+                  <span class="player-name">Santis Cayax Oscar Alexander</span>
+                </td>
+                <td class="stat-value">26</td>
+                <td class="stat-value">Antigua GFC</td>
+                <td><span class="goals-highlight">6</span></td>
+                <td class="stat-value">1047</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">6</div>
+                </td>
+                <td>
+                  <span class="player-name"
+                    >Aquino Espíndola Derlis Sebastián</span
+                  >
+                </td>
+                <td class="stat-value">5</td>
+                <td class="stat-value">Xinabajul Huehue</td>
+                <td><span class="goals-highlight">6</span></td>
+                <td class="stat-value">1367</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">7</div>
+                </td>
+                <td>
+                  <span class="player-name">Maziero Agustín</span>
+                </td>
+                <td class="stat-value">27</td>
+                <td class="stat-value">Achuapa</td>
+                <td><span class="goals-highlight">6</span></td>
+                <td class="stat-value">1428</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">8</div>
+                </td>
+                <td>
+                  <span class="player-name">Apaolaza Juan Francisco</span>
+                </td>
+                <td class="stat-value">28</td>
+                <td class="stat-value">Antigua GFC</td>
+                <td><span class="goals-highlight">5</span></td>
+                <td class="stat-value">1005</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">9</div>
+                </td>
+                <td>
+                  <span class="player-name">Martínez Navas José Carlos</span>
+                </td>
+                <td class="stat-value">27</td>
+                <td class="stat-value">Municipal</td>
+                <td><span class="goals-highlight">5</span></td>
+                <td class="stat-value">1071</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">10</div>
+                </td>
+                <td>
+                  <span class="player-name">García Mejía Lynner O'Neal</span>
+                </td>
+                <td class="stat-value">25</td>
+                <td class="stat-value">Comunicaciones</td>
+                <td><span class="goals-highlight">5</span></td>
+                <td class="stat-value">1165</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">11</div>
+                </td>
+                <td>
+                  <span class="player-name">Zúñiga Duque Weimar Jesús</span>
+                </td>
+                <td class="stat-value">31</td>
+                <td class="stat-value">Achuapa</td>
+                <td><span class="goals-highlight">5</span></td>
+                <td class="stat-value">1201</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">12</div>
+                </td>
+                <td>
+                  <span class="player-name">López Morales Ángel Adolfo</span>
+                </td>
+                <td class="stat-value">27</td>
+                <td class="stat-value">Guastatoya</td>
+                <td><span class="goals-highlight">5</span></td>
+                <td class="stat-value">1373</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">13</div>
+                </td>
+                <td>
+                  <span class="player-name">Rodríguez Silva Mario Andrés</span>
+                </td>
+                <td class="stat-value">29</td>
+                <td class="stat-value">Aurora FC</td>
+                <td><span class="goals-highlight">4</span></td>
+                <td class="stat-value">890</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">14</div>
+                </td>
+                <td>
+                  <span class="player-name">González Morales Juan Carlos</span>
+                </td>
+                <td class="stat-value">26</td>
+                <td class="stat-value">Xelajú MC</td>
+                <td><span class="goals-highlight">4</span></td>
+                <td class="stat-value">1120</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">15</div>
+                </td>
+                <td>
+                  <span class="player-name"
+                    >Hernández López Roberto Carlos</span
+                  >
+                </td>
+                <td class="stat-value">30</td>
+                <td class="stat-value">Cobán Imperial</td>
+                <td><span class="goals-highlight">4</span></td>
+                <td class="stat-value">945</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">16</div>
+                </td>
+                <td>
+                  <span class="player-name">Pérez Sandoval Diego Fernando</span>
+                </td>
+                <td class="stat-value">23</td>
+                <td class="stat-value">Mictlán</td>
+                <td><span class="goals-highlight">3</span></td>
+                <td class="stat-value">678</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">17</div>
+                </td>
+                <td>
+                  <span class="player-name">Vásquez Mejía Oscar Alejandro</span>
+                </td>
+                <td class="stat-value">28</td>
+                <td class="stat-value">Marquense</td>
+                <td><span class="goals-highlight">3</span></td>
+                <td class="stat-value">812</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">18</div>
+                </td>
+                <td>
+                  <span class="player-name">Morales Castro Luis Antonio</span>
+                </td>
+                <td class="stat-value">25</td>
+                <td class="stat-value">Municipal</td>
+                <td><span class="goals-highlight">3</span></td>
+                <td class="stat-value">723</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">19</div>
+                </td>
+                <td>
+                  <span class="player-name">López Rivera Francisco Javier</span>
+                </td>
+                <td class="stat-value">31</td>
+                <td class="stat-value">Guastatoya</td>
+                <td><span class="goals-highlight">3</span></td>
+                <td class="stat-value">1089</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">20</div>
+                </td>
+                <td>
+                  <span class="player-name">Ramírez García Carlos Eduardo</span>
+                </td>
+                <td class="stat-value">24</td>
+                <td class="stat-value">Comunicaciones</td>
+                <td><span class="goals-highlight">2</span></td>
+                <td class="stat-value">567</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Container para Footer -->
+    <div id="footer-container">
+      <!-- Loading placeholder -->
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="min-height: 100px"
+      >
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Cargando footer...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Component Loader -->
+    <script src="./js/component-loader.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          // Crear instancia del cargador de componentes
+          const componentLoader = new ComponentLoader();
+
+          // Cargar layout estándar
+          await componentLoader.loadStandardLayout();
+
+          // Inicializar funcionalidades específicas de la página
+          initializeScorersFeatures();
+
+          console.log(
+            "✅ Página de tabla de goleadores inicializada correctamente"
+          );
+        } catch (error) {
+          console.error("❌ Error al inicializar la página:", error);
+          showErrorFallback();
+        }
+      });
+
+      function initializeScorersFeatures() {
+        // Configurar selectores
+        setupSelectors();
+
+        // Configurar interacciones de jugadores
+        setupPlayerInteractions();
+
+        // Configurar efectos hover
+        setupHoverEffects();
+
+        // Actualizar contador
+        updateTotalCounter();
+      }
+
+      function setupSelectors() {
+        const campeonatoSelect = document.getElementById("campeonatoSelect");
+
+        campeonatoSelect.addEventListener("change", () => {
+          updateTableHeader();
+          showNotification(
+            `Cargando goleadores de: ${
+              campeonatoSelect.options[campeonatoSelect.selectedIndex].text
+            }`,
+            "info"
+          );
+          setTimeout(() => {
+            showNotification("Tabla de goleadores actualizada", "success");
+          }, 1000);
+        });
+      }
+
+      function updateTableHeader() {
+        const campeonatoSelect = document.getElementById("campeonatoSelect");
+        const tableHeader = document.querySelector(".table-header div");
+
+        const selectedCampeonato =
+          campeonatoSelect.options[campeonatoSelect.selectedIndex].text;
+
+        tableHeader.innerHTML = `<i class="bi bi-trophy-fill me-3"></i>Tabla de Goleadores - ${selectedCampeonato}`;
+
+        // Actualizar también el subtítulo del hero
+        document.querySelector(
+          ".lead"
+        ).textContent = `Liga Nacional de Guatemala - ${selectedCampeonato}`;
+      }
+
+      function setupPlayerInteractions() {
+        const playerRows = document.querySelectorAll("tbody tr");
+
+        playerRows.forEach((row, index) => {
+          row.addEventListener("click", () => {
+            const playerName = row.querySelector(".player-name").textContent;
+            const goals = row.querySelector(".goals-highlight").textContent;
+            showNotification(`${playerName} - ${goals} goles anotados`, "info");
+          });
+        });
+      }
+
+      function setupHoverEffects() {
+        const rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach((row) => {
+          row.addEventListener("mouseenter", () => {
+            row.style.boxShadow = "0 4px 15px rgba(255, 0, 0, 0.1)";
+          });
+
+          row.addEventListener("mouseleave", () => {
+            row.style.boxShadow = "none";
+          });
+        });
+      }
+
+      function updateTotalCounter() {
+        const totalRows = document.querySelectorAll("tbody tr").length;
+        document.getElementById("totalCounter").textContent = totalRows;
+      }
+
+      function toggleAutogoles() {
+        showNotification("Función de autogoles en desarrollo", "warning");
+      }
+
+      function refreshTable() {
+        showNotification("Actualizando tabla de goleadores...", "info");
+
+        setTimeout(() => {
+          showNotification("Tabla de goleadores actualizada", "success");
+        }, 1000);
+      }
+
+      function showErrorFallback() {
+        const headerContainer = document.getElementById("header-container");
+        const footerContainer = document.getElementById("footer-container");
+
+        if (headerContainer && headerContainer.innerHTML.includes("spinner")) {
+          headerContainer.innerHTML = `
+            <div class="alert alert-warning text-center">
+              <i class="bi bi-exclamation-triangle"></i>
+              Error al cargar el header. <a href="#" onclick="location.reload()">Recargar página</a>
+            </div>
+          `;
+        }
+
+        if (footerContainer && footerContainer.innerHTML.includes("spinner")) {
+          footerContainer.innerHTML = `
+            <footer class="bg-dark text-white text-center py-3">
+              <div class="container">
+                <small>© 2025 Planeta Sportia. Todos los derechos reservados.</small>
+              </div>
+            </footer>
+          `;
+        }
+      }
+
+      function showNotification(message, type = "info") {
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText =
+          "top: 20px; right: 20px; z-index: 9999; min-width: 300px;";
+        alertDiv.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alertDiv);
+
+        setTimeout(() => {
+          if (alertDiv.parentNode) {
+            alertDiv.remove();
+          }
+        }, 5000);
+      }
+
+      // Auto-refresh de la tabla cada 5 minutos
+      setInterval(() => {
+        console.log("Verificando actualizaciones de la tabla de goleadores...");
+      }, 300000);
+
+      // Configurar scroll suave
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendario Liga Nacional | Planeta Sportia</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+
+    <link href="./css/index.css" rel="stylesheet" />
+
+    <style>
+      /* Estilos específicos para calendario */
+      .calendar-hero {
+        background: black; /* Fondo negro */
+        color: red; /* Letras rojas */
+        padding: 60px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .calendar-hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>')
+          center/150px;
+        opacity: 0.3;
+      }
+
+      .calendar-hero .container {
+        position: relative;
+        z-index: 2;
+      }
+
+      .calendar-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+      }
+
+      .controls-section {
+        background: #f8f9fa;
+        padding: 30px 0;
+        border-bottom: 3px solid var(--primary-red);
+      }
+
+      .control-group {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .control-label {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .form-select-custom {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+      }
+
+      .form-select-custom:focus {
+        border-color: var(--primary-red);
+        box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+      }
+
+      .form-check-custom {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .form-check-custom:hover {
+        background: #e9ecef;
+      }
+
+      .form-check-input-custom {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--primary-red);
+        border-radius: 4px;
+      }
+
+      .form-check-input-custom:checked {
+        background-color: var(--primary-red);
+        border-color: var(--primary-red);
+      }
+
+      .jornada-section {
+        background: white;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .jornada-header {
+        background: linear-gradient(
+          135deg,
+          var(--dark-red) 0%,
+          var(--primary-red) 100%
+        );
+        color: white;
+        padding: 20px 30px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .match-container {
+        padding: 20px 30px;
+      }
+
+      .match-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid #f1f5f9;
+        transition: all 0.3s ease;
+      }
+
+      .match-row:last-child {
+        border-bottom: none;
+      }
+
+      .match-row:hover {
+        background: #f8fafc;
+        transform: translateX(5px);
+      }
+
+      .team-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+      }
+
+      .team-name {
+        font-weight: 600;
+        color: #334155;
+        font-size: 1rem;
+      }
+
+      .match-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 200px;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .match-time {
+        background: var(--primary-red);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+      }
+
+      .match-score {
+        background: linear-gradient(45deg, var(--dark-red), var(--primary-red));
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: bold;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+        min-width: 80px;
+        text-align: center;
+      }
+
+      .match-date {
+        color: #64748b;
+        font-size: 0.85rem;
+        font-style: italic;
+      }
+
+      .vs-separator {
+        color: #64748b;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin: 0 15px;
+      }
+
+      /* Estados de partidos */
+      .match-scheduled .match-time {
+        background: var(--hover-red);
+      }
+
+      .match-live .match-time {
+        background: var(--primary-red);
+        animation: pulse 2s infinite;
+      }
+
+      .match-finished .match-score {
+        background: linear-gradient(45deg, var(--dark-red), var(--primary-red));
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .calendar-title {
+          font-size: 2rem;
+        }
+
+        .match-row {
+          flex-direction: column;
+          gap: 15px;
+          text-align: center;
+        }
+
+        .team-info {
+          justify-content: center;
+        }
+
+        .match-center {
+          min-width: auto;
+        }
+
+        .vs-separator {
+          display: none;
+        }
+      }
+
+      /* Filtros adicionales */
+      .filter-section {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .filter-title {
+        color: var(--primary-red);
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--primary-red);
+      }
+
+      .filter-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .filter-btn {
+        background: #f1f5f9;
+        color: #475569;
+        border: 2px solid #e2e8f0;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .filter-btn:hover,
+      .filter-btn.active {
+        background: var(--primary-red);
+        color: white;
+        border-color: var(--primary-red);
+        transform: translateY(-2px);
+      }
+
+      .stats-summary {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        color: white;
+        padding: 40px 0;
+        margin-top: 50px;
+        border-radius: 15px;
+      }
+
+      .stat-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+      }
+
+      .stat-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--primary-red);
+      }
+
+      .stat-label {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Container para Header -->
+    <div id="header-container">
+      <!-- Loading placeholder -->
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="min-height: 80px"
+      >
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Cargando header...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Section del Calendario -->
+    <section class="calendar-hero">
+      <div class="container text-center">
+        <h1 class="calendar-title">Calendario - Liga Nacional</h1>
+        <p class="lead mb-0">
+          Programación completa de la Liga Nacional de Guatemala
+        </p>
+      </div>
+    </section>
+
+    <!-- Controles de Filtro -->
+    <section class="controls-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="control-group">
+              <label class="control-label">Campeonato</label>
+              <select
+                class="form-select form-select-custom"
+                id="campeonatoSelect"
+              >
+                <option value="apertura2025" selected>Apertura 2025</option>
+                <option value="clausura2025">Clausura 2025</option>
+              </select>
+            </div>
+          </div>
+          <!--<div class="col-lg-6">
+            <div class="control-group">
+              <div class="form-check-custom">
+                <input 
+                  class="form-check-input form-check-input-custom" 
+                  type="checkbox" 
+                  value="" 
+                  id="calendarioCompleto"
+                  checked
+                >
+                <label class="form-check-label control-label" for="calendarioCompleto">
+                  Calendario completo
+                </label>
+              </div>
+            </div>
+          </div>-->
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtros adicionales -->
+    <!--<div class="container mt-4">
+      <div class="filter-section">
+        <h3 class="filter-title">
+          <i class="bi bi-funnel"></i> Filtrar por estado
+        </h3>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="scheduled">Programados</button>
+          <button class="filter-btn" data-filter="live">En vivo</button>
+          <button class="filter-btn" data-filter="finished">Finalizados</button>
+        </div>
+      </div>
+    </div>-->
+
+    <!-- Main Content -->
+    <main class="container my-4">
+      <!-- Jornada 1 -->
+      <div class="jornada-section" data-jornada="1">
+        <div class="jornada-header">
+          <i class="bi bi-calendar-event me-3"></i>Jornada 1
+        </div>
+        <div class="match-container">
+          <!-- Partido 1 -->
+          <div class="match-row match-scheduled" data-status="scheduled">
+            <div class="team-info">
+              <span class="team-name">Antigua GFC</span>
+            </div>
+            <div class="match-center">
+              <div class="match-time">20-07 / 00:00</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Marquense</span>
+            </div>
+          </div>
+
+          <!-- Partido 2 -->
+          <div class="match-row match-scheduled" data-status="scheduled">
+            <div class="team-info">
+              <span class="team-name">Cobán Imperial</span>
+            </div>
+            <div class="match-center">
+              <div class="match-time">20-07 / 00:00</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Mixco</span>
+            </div>
+          </div>
+
+          <!-- Partido 3 -->
+          <div class="match-row match-scheduled" data-status="scheduled">
+            <div class="team-info">
+              <span class="team-name">Aurora FC</span>
+            </div>
+            <div class="match-center">
+              <div class="match-time">20-07 / 00:00</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Guastatoya</span>
+            </div>
+          </div>
+
+          <!-- Partido 4 -->
+          <div class="match-row match-scheduled" data-status="scheduled">
+            <div class="team-info">
+              <span class="team-name">Achuapa</span>
+            </div>
+            <div class="match-center">
+              <div class="match-time">20-07 / 00:00</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Municipal</span>
+            </div>
+          </div>
+
+          <!-- Partido 5 -->
+          <div class="match-row match-scheduled" data-status="scheduled">
+            <div class="team-info">
+              <span class="team-name">Malacateco</span>
+            </div>
+            <div class="match-center">
+              <div class="match-time">20-07 / 00:00</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Xelajú MC</span>
+            </div>
+          </div>
+
+          <!-- Partido 6 -->
+          <div class="match-row match-scheduled" data-status="scheduled">
+            <div class="team-info">
+              <span class="team-name">Comunicaciones</span>
+            </div>
+            <div class="match-center">
+              <div class="match-time">20-07 / 00:00</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Mictlán</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jornada 2 -->
+      <div class="jornada-section" data-jornada="2">
+        <div class="jornada-header">
+          <i class="bi bi-calendar-event me-3"></i>Jornada 2
+        </div>
+        <div class="match-container">
+          <!-- Partido 1 -->
+          <div class="match-row match-finished" data-status="finished">
+            <div class="team-info">
+              <span class="team-name">Municipal</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">1 - 0</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Aurora FC</span>
+            </div>
+          </div>
+
+          <!-- Partido 2 -->
+          <div class="match-row match-finished" data-status="finished">
+            <div class="team-info">
+              <span class="team-name">Guastatoya</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">2 - 1</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Cobán Imperial</span>
+            </div>
+          </div>
+
+          <!-- Partido 3 -->
+          <div class="match-row match-finished" data-status="finished">
+            <div class="team-info">
+              <span class="team-name">Xelajú MC</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">3 - 0</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Antigua GFC</span>
+            </div>
+          </div>
+
+          <!-- Partido 4 -->
+          <div class="match-row match-live" data-status="live">
+            <div class="team-info">
+              <span class="team-name">Mixco</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">3 - 0</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Comunicaciones</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jornada 2 -->
+      <div class="jornada-section" data-jornada="3">
+        <div class="jornada-header">
+          <i class="bi bi-calendar-event me-3"></i>Jornada 3
+        </div>
+        <div class="match-container">
+          <!-- Partido 1 -->
+          <div class="match-row match-finished" data-status="finished">
+            <div class="team-info">
+              <span class="team-name">Municipal</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">1 - 0</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Aurora FC</span>
+            </div>
+          </div>
+
+          <!-- Partido 2 -->
+          <div class="match-row match-finished" data-status="finished">
+            <div class="team-info">
+              <span class="team-name">Guastatoya</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">2 - 1</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Cobán Imperial</span>
+            </div>
+          </div>
+
+          <!-- Partido 3 -->
+          <div class="match-row match-finished" data-status="finished">
+            <div class="team-info">
+              <span class="team-name">Xelajú MC</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">3 - 0</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Antigua GFC</span>
+            </div>
+          </div>
+
+          <!-- Partido 4 -->
+          <div class="match-row match-live" data-status="live">
+            <div class="team-info">
+              <span class="team-name">Mixco</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">3 - 0</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Comunicaciones</span>
+            </div>
+          </div>
+        </div>
+      </div>      
+
+      <!-- Jornada 2 -->
+      <div class="jornada-section" data-jornada="4">
+        <div class="jornada-header">
+          <i class="bi bi-calendar-event me-3"></i>Jornada 4
+        </div>
+        <div class="match-container">
+          <!-- Partido 1 -->
+          <div class="match-row match-finished" data-status="finished">
+            <div class="team-info">
+              <span class="team-name">Municipal</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">1 - 0</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Aurora FC</span>
+            </div>
+          </div>
+
+          <!-- Partido 2 -->
+          <div class="match-row match-finished" data-status="finished">
+            <div class="team-info">
+              <span class="team-name">Guastatoya</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">2 - 1</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Cobán Imperial</span>
+            </div>
+          </div>
+
+          <!-- Partido 3 -->
+          <div class="match-row match-finished" data-status="finished">
+            <div class="team-info">
+              <span class="team-name">Xelajú MC</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">3 - 0</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Antigua GFC</span>
+            </div>
+          </div>
+
+          <!-- Partido 4 -->
+          <div class="match-row match-live" data-status="live">
+            <div class="team-info">
+              <span class="team-name">Mixco</span>
+            </div>
+            <div class="match-center">
+              <div class="match-score">3 - 0</div>
+              <div class="match-date">27-07</div>
+            </div>
+            <div class="team-info" style="justify-content: flex-end">
+              <span class="team-name">Comunicaciones</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estadísticas Resumen -->
+      <!-- <div class="stats-summary">
+        <div class="container">
+          <div class="row g-4 text-center">
+            <div class="col-md-3">
+              <div class="stat-card">
+                <div class="stat-number">24</div>
+                <div class="stat-label">Partidos Totales</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-card">
+                <div class="stat-number">18</div>
+                <div class="stat-label">Programados</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Finalizados</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stat-card">
+                <div class="stat-number">1</div>
+                <div class="stat-label">En Vivo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>-->
+    </main>
+
+    <!-- Container para Footer -->
+    <div id="footer-container">
+      <!-- Loading placeholder -->
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="min-height: 100px"
+      >
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Cargando footer...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Component Loader -->
+    <script src="./js/component-loader.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          // Crear instancia del cargador de componentes
+          const componentLoader = new ComponentLoader();
+
+          // Cargar layout estándar
+          await componentLoader.loadStandardLayout();
+
+          // Inicializar funcionalidades específicas de la página
+          initializeCalendarFeatures();
+
+          console.log("✅ Página de calendario inicializada correctamente");
+        } catch (error) {
+          console.error("❌ Error al inicializar la página:", error);
+          showErrorFallback();
+        }
+      });
+
+      function initializeCalendarFeatures() {
+        // Configurar filtros
+        setupFilters();
+
+        // Configurar selectores
+        setupSelectors();
+
+        // Configurar interacciones de partidos
+        setupMatchInteractions();
+
+        // Configurar efectos hover
+        setupHoverEffects();
+
+        // Actualizar estadísticas
+        updateStats();
+      }
+
+      function setupFilters() {
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const matchRows = document.querySelectorAll(".match-row");
+
+        filterButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            // Remover clase active de todos los botones
+            filterButtons.forEach((btn) => btn.classList.remove("active"));
+
+            // Agregar clase active al botón clickeado
+            button.classList.add("active");
+
+            const filter = button.getAttribute("data-filter");
+
+            // Filtrar partidos
+            matchRows.forEach((row) => {
+              if (filter === "all") {
+                row.style.display = "flex";
+              } else {
+                const status = row.getAttribute("data-status");
+                row.style.display = status === filter ? "flex" : "none";
+              }
+            });
+
+            showNotification(`Filtro aplicado: ${button.textContent}`, "info");
+          });
+        });
+      }
+
+      function setupSelectors() {
+        const campeonatoSelect = document.getElementById("campeonatoSelect");
+        const calendarioCompleto =
+          document.getElementById("calendarioCompleto");
+
+        campeonatoSelect.addEventListener("change", () => {
+          showNotification(
+            `Cambiando a: ${
+              campeonatoSelect.options[campeonatoSelect.selectedIndex].text
+            }`,
+            "info"
+          );
+          // Aquí puedes agregar lógica para cargar datos del campeonato seleccionado
+        });
+
+        calendarioCompleto.addEventListener("change", () => {
+          if (calendarioCompleto.checked) {
+            showNotification("Mostrando calendario completo", "success");
+          } else {
+            showNotification("Mostrando vista resumida", "info");
+          }
+        });
+      }
+
+      function setupMatchInteractions() {
+        const matchRows = document.querySelectorAll(".match-row");
+
+        matchRows.forEach((row) => {
+          row.addEventListener("click", () => {
+            const teams = row.querySelectorAll(".team-name");
+            const team1 = teams[0].textContent;
+            const team2 = teams[1].textContent;
+
+            showNotification(`Ver detalles: ${team1} vs ${team2}`, "info");
+
+            // Aquí puedes agregar lógica para mostrar más detalles del partido
+          });
+        });
+      }
+
+      function setupHoverEffects() {
+        const statCards = document.querySelectorAll(".stat-card");
+
+        statCards.forEach((card) => {
+          card.addEventListener("mouseenter", () => {
+            card.style.transform = "translateY(-5px) scale(1.02)";
+          });
+
+          card.addEventListener("mouseleave", () => {
+            card.style.transform = "translateY(0) scale(1)";
+          });
+        });
+      }
+
+      function updateStats() {
+        // Calcular estadísticas dinámicamente
+        const allMatches = document.querySelectorAll(".match-row");
+        const scheduledMatches = document.querySelectorAll(
+          '.match-row[data-status="scheduled"]'
+        );
+        const finishedMatches = document.querySelectorAll(
+          '.match-row[data-status="finished"]'
+        );
+        const liveMatches = document.querySelectorAll(
+          '.match-row[data-status="live"]'
+        );
+
+        // Actualizar números en las tarjetas de estadísticas
+        const statNumbers = document.querySelectorAll(".stat-number");
+        if (statNumbers.length >= 4) {
+          statNumbers[0].textContent = allMatches.length;
+          statNumbers[1].textContent = scheduledMatches.length;
+          statNumbers[2].textContent = finishedMatches.length;
+          statNumbers[3].textContent = liveMatches.length;
+        }
+      }
+
+      function showErrorFallback() {
+        const headerContainer = document.getElementById("header-container");
+        const footerContainer = document.getElementById("footer-container");
+
+        if (headerContainer && headerContainer.innerHTML.includes("spinner")) {
+          headerContainer.innerHTML = `
+            <div class="alert alert-warning text-center">
+              <i class="bi bi-exclamation-triangle"></i>
+              Error al cargar el header. <a href="#" onclick="location.reload()">Recargar página</a>
+            </div>
+          `;
+        }
+
+        if (footerContainer && footerContainer.innerHTML.includes("spinner")) {
+          footerContainer.innerHTML = `
+            <footer class="bg-dark text-white text-center py-3">
+              <div class="container">
+                <small>© 2025 Planeta Sportia. Todos los derechos reservados.</small>
+              </div>
+            </footer>
+          `;
+        }
+      }
+
+      function showNotification(message, type = "info") {
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText =
+          "top: 20px; right: 20px; z-index: 9999; min-width: 300px;";
+        alertDiv.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alertDiv);
+
+        setTimeout(() => {
+          if (alertDiv.parentNode) {
+            alertDiv.remove();
+          }
+        }, 5000);
+      }
+
+      // Funciones adicionales para el calendario
+      function addNewMatch() {
+        // Función para agregar nuevos partidos dinámicamente
+        showNotification("Función para agregar partidos próximamente", "info");
+      }
+
+      function exportCalendar() {
+        // Función para exportar el calendario
+        showNotification("Exportando calendario...", "success");
+      }
+
+      // Configurar atajos de teclado
+      document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.key === "f") {
+          e.preventDefault();
+          document.querySelector(".filter-btn").focus();
+        }
+      });
+
+      // Auto-refresh para partidos en vivo
+      setInterval(() => {
+        const liveMatches = document.querySelectorAll(
+          '.match-row[data-status="live"]'
+        );
+        if (liveMatches.length > 0) {
+          // Aquí puedes agregar lógica para actualizar marcadores en tiempo real
+          console.log("Actualizando partidos en vivo...");
+        }
+      }, 30000); // Actualizar cada 30 segundos
+
+      // Configurar scroll suave
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

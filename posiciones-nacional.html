@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabla de Posiciones - Liga Nacional | Planeta Sportia</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+
+    <link href="./css/index.css" rel="stylesheet" />
+
+    <style>
+      /* Estilos específicos para tabla de posiciones */
+      .positions-hero {
+        background: black;
+        color: red;
+        padding: 60px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .positions-hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>')
+          center/150px;
+        opacity: 0.3;
+      }
+
+      .positions-hero .container {
+        position: relative;
+        z-index: 2;
+      }
+
+      .positions-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+      }
+
+      .controls-section {
+        background: #f8f9fa;
+        padding: 30px 0;
+        border-bottom: 3px solid var(--primary-red);
+      }
+
+      .control-group {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .control-label {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .form-select-custom {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+      }
+
+      .form-select-custom:focus {
+        border-color: var(--primary-red);
+        box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+      }
+
+      .table-section {
+        background: white;
+        border-radius: 15px;
+        margin: 30px 0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .table-header {
+        background: linear-gradient(
+          135deg,
+          var(--dark-red) 0%,
+          var(--primary-red) 100%
+        );
+        color: white;
+        padding: 20px 30px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .refresh-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+
+      .refresh-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .positions-table {
+        margin: 0;
+        border: none;
+      }
+
+      .positions-table thead {
+        background: #f8f9fa;
+      }
+
+      .positions-table th {
+        border: none;
+        padding: 15px 12px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .positions-table td {
+        border: none;
+        border-bottom: 1px solid #f1f5f9;
+        padding: 15px 12px;
+        vertical-align: middle;
+        text-align: center;
+      }
+
+      .positions-table tbody tr {
+        transition: all 0.3s ease;
+      }
+
+      .positions-table tbody tr:hover {
+        background: #f8fafc;
+        transform: translateX(3px);
+      }
+
+      .position-number {
+        background: var(--primary-red);
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin: 0 auto;
+      }
+
+
+
+      .team-name {
+        font-weight: 600;
+        color: #334155;
+        font-size: 1rem;
+        text-align: left;
+        padding-left: 15px;
+      }
+
+      .points-highlight {
+        background: linear-gradient(45deg, var(--dark-red), var(--primary-red));
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      .stat-value {
+        font-weight: 600;
+        color: #475569;
+      }
+
+      /* Colores especiales para posiciones */
+      .position-champion .position-number {
+        background: linear-gradient(45deg, #FFD700, #FFA500);
+        color: #333;
+      }
+
+      .position-international .position-number {
+        background: linear-gradient(45deg, #4CAF50, #2E7D32);
+      }
+
+      .position-relegation .position-number {
+        background: linear-gradient(45deg, #f44336, #d32f2f);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .positions-title {
+          font-size: 2rem;
+        }
+
+        .positions-table th,
+        .positions-table td {
+          padding: 10px 8px;
+          font-size: 0.85rem;
+        }
+
+        .team-info {
+          gap: 8px;
+        }
+
+        .team-name {
+          font-size: 0.9rem;
+        }
+
+        .table-header {
+          font-size: 1.2rem;
+          padding: 15px 20px;
+        }
+      }
+
+      /* Animaciones */
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .table-section {
+        animation: slideIn 0.5s ease-out;
+      }
+
+      .positions-table tbody tr:nth-child(even) {
+        background: #fafbfc;
+      }
+
+      /* Diferencial de goles */
+      .diff-positive {
+        color: #22c55e;
+        font-weight: bold;
+      }
+
+      .diff-negative {
+        color: #ef4444;
+        font-weight: bold;
+      }
+
+      .diff-neutral {
+        color: #6b7280;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Container para Header -->
+    <div id="header-container">
+      <!-- Loading placeholder -->
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="min-height: 80px"
+      >
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Cargando header...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="positions-hero">
+      <div class="container text-center">
+        <h1 class="positions-title">Posiciones - Liga Nacional</h1>
+        <p class="lead mb-0">
+          Calendario de la Liga Nacional de Guatemala
+        </p>
+      </div>
+    </section>
+
+    <!-- Controles -->
+    <section class="controls-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <div class="control-group">
+              <label class="control-label">Campeonato</label>
+              <select
+                class="form-select form-select-custom"
+                id="campeonatoSelect"
+              >
+                <option value="apertura2025" selected>Apertura 2025</option>
+                <option value="clausura2025">Clausura 2025</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container my-4">
+      <!-- Tabla de Posiciones -->
+      <div class="table-section">
+        <div class="table-header">
+          <div>
+            <i class="bi bi-trophy me-3"></i>Tabla de Posiciones - Apertura 2025
+          </div>
+          <button class="refresh-btn" onclick="refreshTable()">
+            <i class="bi bi-arrow-clockwise me-1"></i>80
+          </button>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="table positions-table">
+            <thead>
+              <tr>
+                <th>POS</th>
+                <th>EQUIPO</th>
+                <th>PTS</th>
+                <th>JJ</th>
+                <th>JG</th>
+                <th>JE</th>
+                <th>JP</th>
+                <th>GF</th>
+                <th>GC</th>
+                <th>DIF</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="position-champion">
+                <td>
+                  <div class="position-number">1</div>
+                </td>
+                <td>
+                  <span class="team-name">Achuapa</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+              
+              <tr class="position-international">
+                <td>
+                  <div class="position-number">2</div>
+                </td>
+                <td>
+                  <span class="team-name">Antigua GFC</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">3</div>
+                </td>
+                <td>
+                  <span class="team-name">Aurora FC</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">4</div>
+                </td>
+                <td>
+                  <span class="team-name">Cobán Imperial</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">5</div>
+                </td>
+                <td>
+                  <span class="team-name">Comunicaciones</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">6</div>
+                </td>
+                <td>
+                  <span class="team-name">Guastatoya</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">7</div>
+                </td>
+                <td>
+                  <span class="team-name">Malacateco</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">8</div>
+                </td>
+                <td>
+                  <span class="team-name">Marquense</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">9</div>
+                </td>
+                <td>
+                  <span class="team-name">Mictlán</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="position-number">10</div>
+                </td>
+                <td>
+                  <span class="team-name">Mixco</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+
+              <tr class="position-relegation">
+                <td>
+                  <div class="position-number">11</div>
+                </td>
+                <td>
+                  <span class="team-name">Municipal</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+
+              <tr class="position-relegation">
+                <td>
+                  <div class="position-number">12</div>
+                </td>
+                <td>
+                  <span class="team-name">Xelajú MC</span>
+                </td>
+                <td><span class="points-highlight">0</span></td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="stat-value">0</td>
+                <td class="diff-neutral">0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Container para Footer -->
+    <div id="footer-container">
+      <!-- Loading placeholder -->
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="min-height: 100px"
+      >
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Cargando footer...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Component Loader -->
+    <script src="./js/component-loader.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          // Crear instancia del cargador de componentes
+          const componentLoader = new ComponentLoader();
+
+          // Cargar layout estándar
+          await componentLoader.loadStandardLayout();
+
+          // Inicializar funcionalidades específicas de la página
+          initializePositionsFeatures();
+
+          console.log("✅ Página de tabla de posiciones inicializada correctamente");
+        } catch (error) {
+          console.error("❌ Error al inicializar la página:", error);
+          showErrorFallback();
+        }
+      });
+
+      function initializePositionsFeatures() {
+        // Configurar selectores
+        setupSelectors();
+
+        // Configurar interacciones de equipos
+        setupTeamInteractions();
+
+        // Configurar efectos hover
+        setupHoverEffects();
+
+        // Actualizar diferencial de goles
+        updateGoalDifference();
+      }
+
+      function setupSelectors() {
+        const campeonatoSelect = document.getElementById("campeonatoSelect");
+
+        campeonatoSelect.addEventListener("change", () => {
+          showNotification(
+            `Cargando datos de: ${
+              campeonatoSelect.options[campeonatoSelect.selectedIndex].text
+            }`,
+            "info"
+          );
+          // Aquí puedes agregar lógica para cargar datos del campeonato seleccionado
+          setTimeout(() => {
+            showNotification("Tabla actualizada correctamente", "success");
+          }, 1000);
+        });
+      }
+
+      function setupTeamInteractions() {
+        const teamRows = document.querySelectorAll("tbody tr");
+
+        teamRows.forEach((row, index) => {
+          row.addEventListener("click", () => {
+            const teamName = row.querySelector(".team-name").textContent;
+            showNotification(`Ver estadísticas de ${teamName}`, "info");
+            
+            // Aquí puedes agregar lógica para mostrar más detalles del equipo
+          });
+        });
+      }
+
+      function setupHoverEffects() {
+        const rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach((row) => {
+          row.addEventListener("mouseenter", () => {
+            row.style.boxShadow = "0 4px 15px rgba(255, 0, 0, 0.1)";
+          });
+
+          row.addEventListener("mouseleave", () => {
+            row.style.boxShadow = "none";
+          });
+        });
+      }
+
+      function updateGoalDifference() {
+        const diffCells = document.querySelectorAll("tbody tr td:last-child");
+        
+        diffCells.forEach((cell) => {
+          const value = parseInt(cell.textContent);
+          if (value > 0) {
+            cell.className = "diff-positive";
+            cell.textContent = `+${value}`;
+          } else if (value < 0) {
+            cell.className = "diff-negative";
+          } else {
+            cell.className = "diff-neutral";
+          }
+        });
+      }
+
+      function refreshTable() {
+        showNotification("Actualizando tabla de posiciones...", "info");
+        
+        // Simulación de actualización
+        setTimeout(() => {
+          showNotification("Tabla actualizada correctamente", "success");
+        }, 1000);
+      }
+
+      function showErrorFallback() {
+        const headerContainer = document.getElementById("header-container");
+        const footerContainer = document.getElementById("footer-container");
+
+        if (headerContainer && headerContainer.innerHTML.includes("spinner")) {
+          headerContainer.innerHTML = `
+            <div class="alert alert-warning text-center">
+              <i class="bi bi-exclamation-triangle"></i>
+              Error al cargar el header. <a href="#" onclick="location.reload()">Recargar página</a>
+            </div>
+          `;
+        }
+
+        if (footerContainer && footerContainer.innerHTML.includes("spinner")) {
+          footerContainer.innerHTML = `
+            <footer class="bg-dark text-white text-center py-3">
+              <div class="container">
+                <small>© 2025 Planeta Sportia. Todos los derechos reservados.</small>
+              </div>
+            </footer>
+          `;
+        }
+      }
+
+      function showNotification(message, type = "info") {
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText =
+          "top: 20px; right: 20px; z-index: 9999; min-width: 300px;";
+        alertDiv.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alertDiv);
+
+        setTimeout(() => {
+          if (alertDiv.parentNode) {
+            alertDiv.remove();
+          }
+        }, 5000);
+      }
+
+      // Auto-refresh de la tabla cada 2 minutos
+      setInterval(() => {
+        // Aquí puedes agregar lógica para actualizar automáticamente los datos
+        console.log("Verificando actualizaciones de la tabla...");
+      }, 120000);
+
+      // Configurar scroll suave
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OPINIÓN | ¡Clasificados! - Planeta Sportia</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Variables CSS personalizadas */
+      :root {
+        --primary-red: #ff0000;
+        --dark-red: #cc0000;
+        --light-red: #ff3333;
+        --hover-red: #ff4444;
+      }
+
+      /* Configuración general */
+      body {
+        font-family: "Arial", sans-serif;
+        line-height: 1.6;
+      }
+
+      /* Header personalizado */
+      .custom-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-bottom: 3px solid var(--primary-red);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo-container {
+        background: var(--primary-red);
+        color: white;
+        border-radius: 8px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 20px;
+      }
+
+      .logo-container:hover {
+        background: var(--dark-red);
+        color: white;
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+      }
+
+      .nav-link-custom {
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid transparent;
+        border-radius: 25px;
+        color: #333;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 1px;
+        padding: 12px 24px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: block;
+      }
+
+      .nav-link-custom:hover {
+        background: var(--primary-red);
+        color: white;
+        border-color: var(--primary-red);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+      }
+
+      /* Breadcrumb personalizado */
+      .breadcrumb-section {
+        background: #f8f9fa;
+        padding: 15px 0;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .breadcrumb-item a {
+        color: var(--primary-red);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .breadcrumb-item.active {
+        color: #6c757d;
+      }
+
+      /* Artículo principal */
+      .article-header {
+        padding: 40px 0 20px;
+      }
+
+      .article-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        line-height: 1.2;
+      }
+
+      .article-meta {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #dee2e6;
+      }
+
+      .author-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .author-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--primary-red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .author-details h6 {
+        margin: 0;
+        color: var(--primary-red);
+        font-weight: 600;
+      }
+
+      .publish-date {
+        color: #6c757d;
+        font-size: 14px;
+      }
+
+      .reading-time {
+        background: #e9ecef;
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 13px;
+        color: #6c757d;
+      }
+
+      /* Carousel de imágenes */
+      .article-carousel {
+        margin-bottom: 30px;
+      }
+
+      .article-carousel .carousel-item img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+
+      .carousel-caption {
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 8px;
+        padding: 10px 15px;
+      }
+
+      /* Contenido del artículo */
+      .article-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #333;
+      }
+
+      .article-content p {
+        margin-bottom: 20px;
+      }
+
+      .article-content strong {
+        color: var(--primary-red);
+      }
+
+      .whatsapp-cta {
+        background: linear-gradient(45deg, #25d366, #20b85c);
+        color: white;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        margin: 30px 0;
+        text-decoration: none;
+        display: block;
+        transition: all 0.3s ease;
+      }
+
+      .whatsapp-cta:hover {
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+      }
+
+      /* Tags del artículo */
+      .article-tags {
+        margin: 30px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+      }
+
+      .tag {
+        display: inline-block;
+        background: var(--primary-red);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        margin: 3px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+      }
+
+      .tag:hover {
+        background: var(--dark-red);
+        color: white;
+      }
+
+      /* Compartir artículo */
+      .share-section {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 12px;
+        margin: 30px 0;
+      }
+
+      .share-btn {
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: white;
+        font-weight: 600;
+        margin: 5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .share-btn:hover {
+        transform: translateY(-2px);
+        color: white;
+      }
+
+      .share-btn.facebook {
+        background: #1877f2;
+      }
+      .share-btn.twitter {
+        background: #1da1f2;
+      }
+      .share-btn.whatsapp {
+        background: #25d366;
+      }
+      .share-btn.print {
+        background: #6c757d;
+      }
+
+      /* Navegación de artículos */
+      .article-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 40px 0;
+        gap: 20px;
+      }
+
+      .nav-article {
+        flex: 1;
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        color: #333;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .nav-article:hover {
+        color: #333;
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(255, 0, 0, 0.2);
+      }
+
+      .nav-article.prev {
+        text-align: left;
+      }
+
+      .nav-article.next {
+        text-align: right;
+        flex-direction: row-reverse;
+      }
+
+      .nav-article-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        background: var(--primary-red);
+        flex-shrink: 0;
+      }
+
+      .nav-article-content h6 {
+        font-size: 14px;
+        margin: 0;
+        color: var(--primary-red);
+        font-weight: 600;
+      }
+
+      .nav-article-content p {
+        font-size: 13px;
+        margin: 5px 0 0;
+        color: #6c757d;
+        line-height: 1.3;
+      }
+
+      /* Sección "También te puede interesar" */
+      .related-section {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        color: white;
+        padding: 60px 0;
+        margin-top: 50px;
+      }
+
+      .related-title {
+        color: var(--primary-red);
+        font-weight: bold;
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .related-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+        backdrop-filter: blur(10px);
+      }
+
+      .related-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(255, 0, 0, 0.3);
+        border-color: var(--primary-red);
+      }
+
+      .related-image {
+        height: 200px;
+        background: linear-gradient(45deg, #333, #555);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .related-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .related-card:hover .related-image img {
+        transform: scale(1.05);
+      }
+
+      .related-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: var(--primary-red);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .related-content {
+        padding: 20px;
+      }
+
+      .related-title-card {
+        color: white;
+        font-weight: bold;
+        font-size: 1.1rem;
+        line-height: 1.4;
+        margin-bottom: 10px;
+        transition: color 0.3s ease;
+      }
+
+      .related-card:hover .related-title-card {
+        color: var(--light-red);
+      }
+
+      .related-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+      }
+
+      .related-author {
+        color: var(--primary-red);
+        font-weight: 600;
+      }
+
+      .related-date {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      /* Sidebar para móvil */
+      .mobile-sidebar {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 30px;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .article-title {
+          font-size: 1.8rem;
+        }
+
+        .article-meta {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+
+        .article-navigation {
+          flex-direction: column;
+        }
+
+        .nav-article.next {
+          flex-direction: row;
+        }
+
+        .related-title {
+          font-size: 2rem;
+        }
+      }
+    </style>
+
+<link href="./css/index.css" rel="stylesheet" />
+
+  </head>
+  <body>
+    <!-- Container para Header -->
+    <div id="header-container">
+      <!-- Loading placeholder -->
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="min-height: 80px"
+      >
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Cargando header...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artículo Principal -->
+    <main class="container my-4">
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- Header del artículo -->
+          <header class="article-header">
+            <div class="d-flex gap-2 mb-3">
+              <span class="badge bg-primary">DESTACADO</span>
+              <!--<span class="badge bg-info">FEDERACIÓN Y OTRAS LIGAS</span>
+              <span class="badge bg-warning text-dark">OPINIÓN</span>
+              <span class="badge bg-success">SELECCIONES NACIONALES</span> -->
+            </div>
+
+            <h1 class="article-title">OPINIÓN | ¡Clasificados!</h1>
+
+             <!-- <div class="article-meta">
+              <div class="author-info">
+                <div class="author-avatar">CM</div>
+                <div class="author-details">
+                  <h6>Carlos Muralles</h6>
+                  <small class="publish-date">Publicado junio 27, 2025</small>
+                </div>
+              </div>
+              <div class="reading-time">2 min de lectura</div>
+              <button class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-bookmark"></i> Guardar
+              </button>
+            </div> -->
+          </header>
+
+          <!-- Carousel de imágenes -->
+          <div
+            id="articleCarousel"
+            class="carousel slide article-carousel"
+            data-bs-ride="carousel"
+          >
+            <div class="carousel-indicators">
+              <button
+                type="button"
+                data-bs-target="#articleCarousel"
+                data-bs-slide-to="0"
+                class="active"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#articleCarousel"
+                data-bs-slide-to="1"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#articleCarousel"
+                data-bs-slide-to="2"
+              ></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img
+                  src="https://via.placeholder.com/800x400/FF0000/FFFFFF?text=GUATEMALA+CLASIFICA"
+                  alt="Guatemala celebra clasificación"
+                />
+                <div class="carousel-caption">
+                  <p>
+                    La selección de Guatemala celebra su clasificación a cuartos
+                    de final
+                  </p>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img
+                  src="https://via.placeholder.com/800x400/0066CC/FFFFFF?text=VESTUARIO+CELEBRACION"
+                  alt="Celebración en vestuario"
+                />
+                <div class="carousel-caption">
+                  <p>
+                    Momentos de celebración en el vestuario después del partido
+                  </p>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img
+                  src="https://via.placeholder.com/800x400/009900/FFFFFF?text=AFICIONADOS"
+                  alt="Aficionados guatemaltecos"
+                />
+                <div class="carousel-caption">
+                  <p>Los aficionados guatemaltecos celebran en las gradas</p>
+                </div>
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#articleCarousel"
+              data-bs-slide="prev"
+            >
+              <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#articleCarousel"
+              data-bs-slide="next"
+            >
+              <span class="carousel-control-next-icon"></span>
+            </button>
+          </div>
+
+          <!-- Contenido del artículo -->
+          <article class="article-content">
+            <p>
+              La selección de Guatemala logró lo que parecía imposible hace unos
+              meses. Con una actuación memorable, el equipo dirigido por Luis
+              Fernando Tena consiguió la clasificación a los cuartos de final de
+              la Copa Oro, demostrando que el fútbol guatemalteco está viviendo
+              un momento histórico.
+            </p>
+
+            <p>
+              El partido ante Guyana fue un claro reflejo de la evolución que ha
+              tenido el combinado nacional.
+              <strong>Los jugadores mostraron una mentalidad ganadora</strong>
+              que hacía tiempo no se veía en el fútbol guatemalteco, pero sin
+              juego de conjunto, dado que
+              <strong>solo se juntan de vez en cuando para chamusquear</strong>.
+              La victoria 3-2 refleja que no marcamos diferencia
+              <strong>ante un equipo inferior</strong>.
+            </p>
+
+            <p>
+              Ahora nos toca enfrentar a Canadá, que apalutó a Honduras pero
+              <strong>luego ya no se mostró tan poderoso</strong>, por lo que,
+              aunque <strong>no somos favoritos</strong>, con una buena
+              aplicación <strong>quizá les podamos competir</strong>.
+            </p>
+
+            <!--<a href="#" class="whatsapp-cta">
+              <i class="bi bi-whatsapp fs-3 mb-2"></i>
+              <strong
+                >Únete a nuestro Canal de WhatsApp y conoce lo mejor de nuestras
+                publicaciones.</strong
+              >
+              <span class="btn btn-light btn-sm mt-2">Haz click AQUÍ</span>
+            </a>
+
+            <p>
+              Este artículo también fue publicado en la Sección de Deportes de
+              <strong>Nuestro Diario</strong> el jueves 26 de junio.
+            </p>
+          </article>-->
+
+          <!-- Tags del artículo -->
+          <!--<div class="article-tags">
+            <h6 class="mb-3"><i class="bi bi-tags"></i> Etiquetado:</h6>
+            <a href="#" class="tag">Concacaf</a>
+            <a href="#" class="tag">Copa Oro</a>
+            <a href="#" class="tag">Cuartos de Final</a>
+            <a href="#" class="tag">Guatemala</a>
+            <a href="#" class="tag">Selección Nacional</a>
+          </div>-->
+
+          <!-- Compartir artículo -->
+          <!--<div class="share-section">
+            <h6 class="mb-3">
+              <i class="bi bi-share"></i> Compartir este artículo
+            </h6>
+            <a href="#" class="share-btn facebook">
+              <i class="bi bi-facebook"></i> Facebook
+            </a>
+            <a href="#" class="share-btn twitter">
+              <i class="bi bi-twitter"></i> Twitter
+            </a>
+            <a href="#" class="share-btn whatsapp">
+              <i class="bi bi-whatsapp"></i> WhatsApp
+            </a>
+            <a href="#" class="share-btn print">
+              <i class="bi bi-printer"></i> Imprimir
+            </a>
+          </div>-->
+
+          <!-- Navegación de artículos -->
+          <div class="article-navigation">
+            <a href="#" class="nav-article prev">
+              <div
+                class="nav-article-image"
+                style="
+                  background: url('https://via.placeholder.com/80x80/333333/FFFFFF?text=ANT')
+                    center/cover;
+                "
+              ></div>
+              <div class="nav-article-content">
+                <h6>← ARTÍCULO ANTERIOR</h6>
+                <p>
+                  Así se disputarán los octavos de final del Mundial de Clubes
+                </p>
+              </div>
+            </a>
+
+            <a href="#" class="nav-article next">
+              <div
+                class="nav-article-image"
+                style="
+                  background: url('https://via.placeholder.com/80x80/009900/FFFFFF?text=SIG')
+                    center/cover;
+                "
+              ></div>
+              <div class="nav-article-content">
+                <h6>ARTÍCULO SIGUIENTE →</h6>
+                <p>
+                  Gerson Tinoco regresa de Honduras para jugar nuevamente en
+                  Guatemala
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+          <div class="mobile-sidebar">
+            <h5 class="text-danger fw-bold text-center mb-4">
+              Lo más popular de la semana
+            </h5>
+
+            <div class="mb-3">
+              <div class="d-flex gap-3 p-3 bg-white rounded">
+                <img
+                  src="https://via.placeholder.com/80x80/009900/FFFFFF?text=GT"
+                  alt="Guatemala"
+                  class="rounded"
+                  style="width: 120px; height: 120px; object-fit: cover"
+                />
+                <div>
+                  <h6 class="mb-1 fs-6">¡Regresa a Guatemala!</h6>
+                  <small class="text-success fw-bold">Antigua GFC</small>
+                  <small class="text-muted d-block">Destacado</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="d-flex gap-3 p-3 bg-white rounded">
+                <img
+                  src="https://via.placeholder.com/80x80/CC0000/FFFFFF?text=XEL"
+                  alt="Xelajú"
+                  class="rounded"
+                  style="width: 120px; height: 120px; object-fit: cover"
+                />
+                <div>
+                  <h6 class="mb-1 fs-6">Salida sensible en Xelajú MC</h6>
+                  <small class="text-danger fw-bold">Xelajú MC</small>
+                  <small class="text-muted d-block">Destacado</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="d-flex gap-3 p-3 bg-white rounded">
+                <img
+                  src="https://via.placeholder.com/80x80/FFD700/000000?text=XIN"
+                  alt="Xinabajul"
+                  class="rounded"
+                 style="width: 120px; height: 120px; object-fit: cover"
+                />
+                <div>
+                  <h6 class="mb-1 fs-6">
+                    Xinabajul recibe el primer revés por parte del TAS
+                  </h6>
+                  <small class="text-warning fw-bold">Primera División</small>
+                  <small class="text-muted d-block">Destacado</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+      </div>
+    </main>
+
+    <!-- Sección "También te puede interesar" -->
+    <section class="related-section">
+      <div class="container">
+        <h2 class="related-title">/ También te puede interesar /</h2>
+
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <article class="related-card">
+              <div class="related-image">
+                <span class="related-badge">FIJADO</span>
+                <img
+                  src="https://via.placeholder.com/400x200/0066CC/FFFFFF?text=GUATEMALA+ONCE"
+                  alt="Guatemala afina detalles"
+                />
+              </div>
+              <div class="related-content">
+                <h3 class="related-title-card">
+                  Guatemala afina detalles en su once
+                </h3>
+                <div class="related-meta">
+                  <span class="related-author">Javier Pineda</span>
+                  <span class="related-date">junio 27, 2025</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-lg-4">
+            <article class="related-card">
+              <div class="related-image">
+                <span class="related-badge">FIJADO</span>
+                <img
+                  src="https://via.placeholder.com/400x200/009900/FFFFFF?text=MOTIVADOS+CANADA"
+                  alt="Motivados para enfrentar Canadá"
+                />
+              </div>
+              <div class="related-content">
+                <h3 class="related-title-card">
+                  VIDEO | Motivados y enfocados para enfrentar a Canadá
+                </h3>
+                <div class="related-meta">
+                  <span class="related-author">Jonathan Tamayac</span>
+                  <span class="related-date">junio 27, 2025</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-lg-4">
+            <article class="related-card">
+              <div class="related-image">
+                <span class="related-badge">COBÁN IMPERIAL</span>
+                <img
+                  src="https://via.placeholder.com/400x200/FF0000/FFFFFF?text=COBAN+FOGUEO"
+                  alt="Cobán Imperial fogueo"
+                />
+              </div>
+              <div class="related-content">
+                <h3 class="related-title-card">
+                  Cobán Imperial anunció su primer fogueo
+                </h3>
+                <div class="related-meta">
+                  <span class="related-author">Javier Pineda</span>
+                  <span class="related-date">junio 27, 2025</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Container para Footer -->
+    <div id="footer-container">
+      <!-- Loading placeholder -->
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="min-height: 100px"
+      >
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Cargando footer...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script src="./js/component-loader.js"></script>
+
+    <script>
+      // Inicializar funcionalidades
+      document.addEventListener("DOMContentLoaded", function () {
+        // Configurar botones de compartir
+        setupSocialSharing();
+
+        // Configurar navegación suave
+        setupSmoothScrolling();
+
+        // Configurar efectos hover
+        setupCardEffects();
+      });
+
+      function setupSocialSharing() {
+        const shareButtons = document.querySelectorAll(".share-btn");
+        const articleTitle =
+          document.querySelector(".article-title").textContent;
+        const articleUrl = window.location.href;
+
+        shareButtons.forEach((button) => {
+          button.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            if (this.classList.contains("facebook")) {
+              window.open(
+                `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                  articleUrl
+                )}`,
+                "_blank"
+              );
+            } else if (this.classList.contains("twitter")) {
+              window.open(
+                `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                  articleTitle
+                )}&url=${encodeURIComponent(articleUrl)}`,
+                "_blank"
+              );
+            } else if (this.classList.contains("whatsapp")) {
+              window.open(
+                `https://wa.me/?text=${encodeURIComponent(
+                  articleTitle + " " + articleUrl
+                )}`,
+                "_blank"
+              );
+            } else if (this.classList.contains("print")) {
+              window.print();
+            }
+          });
+        });
+      }
+
+      function setupSmoothScrolling() {
+        // Configurar scroll suave para enlaces internos
+        const links = document.querySelectorAll('a[href^="#"]');
+        links.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+              target.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          });
+        });
+      }
+
+      function setupCardEffects() {
+        // Efectos para tarjetas relacionadas
+        const relatedCards = document.querySelectorAll(".related-card");
+        relatedCards.forEach((card) => {
+          card.addEventListener("click", function () {
+            // Simulación de navegación a artículo
+            console.log("Navegando a artículo relacionado...");
+          });
+        });
+
+        // Efectos para navegación de artículos
+        const navArticles = document.querySelectorAll(".nav-article");
+        navArticles.forEach((article) => {
+          article.addEventListener("click", function (e) {
+            e.preventDefault();
+            console.log(
+              "Navegando a artículo:",
+              this.querySelector("p").textContent
+            );
+          });
+        });
+      }
+
+      // Configurar carousel automático
+      const carousel = document.querySelector("#articleCarousel");
+      if (carousel) {
+        const bsCarousel = new bootstrap.Carousel(carousel, {
+          interval: 5000,
+          wrap: true,
+        });
+      }
+
+      // Función para mostrar notificaciones
+      function showNotification(message, type = "info") {
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText =
+          "top: 20px; right: 20px; z-index: 9999; min-width: 300px;";
+        alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+        document.body.appendChild(alertDiv);
+
+        setTimeout(() => {
+          if (alertDiv.parentNode) {
+            alertDiv.remove();
+          }
+        }, 4000);
+      }
+
+      // Configurar botón de guardar
+      document
+        .querySelector(".btn-outline-danger")
+        .addEventListener("click", function () {
+          if (this.innerHTML.includes("Guardar")) {
+            this.innerHTML =
+              '<i class="bi bi-bookmark-check-fill"></i> Guardado';
+            this.classList.remove("btn-outline-danger");
+            this.classList.add("btn-danger");
+            showNotification("Artículo guardado correctamente", "success");
+          } else {
+            this.innerHTML = '<i class="bi bi-bookmark"></i> Guardar';
+            this.classList.remove("btn-danger");
+            this.classList.add("btn-outline-danger");
+            showNotification("Artículo removido de guardados", "info");
+          }
+        });
+
+      // Configurar enlaces de tags
+      document.querySelectorAll(".tag").forEach((tag) => {
+        tag.addEventListener("click", function (e) {
+          e.preventDefault();
+          showNotification(
+            `Buscando artículos con tag: ${this.textContent}`,
+            "info"
+          );
+        });
+      });
+
+      // Configurar WhatsApp CTA
+      document
+        .querySelector(".whatsapp-cta")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          showNotification("Redirigiendo a WhatsApp...", "success");
+        });
+
+      // Lazy loading para imágenes
+      const images = document.querySelectorAll("img");
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            if (img.dataset.src) {
+              img.src = img.dataset.src;
+              img.classList.remove("lazy");
+              imageObserver.unobserve(img);
+            }
+          }
+        });
+      });
+
+      images.forEach((img) => {
+        if (img.dataset.src) {
+          imageObserver.observe(img);
+        }
+      });
+
+      // Configurar progreso de lectura (opcional)
+      function setupReadingProgress() {
+        const progressBar = document.createElement("div");
+        progressBar.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 0%;
+                height: 3px;
+                background: var(--primary-red);
+                z-index: 9999;
+                transition: width 0.1s ease;
+            `;
+        document.body.appendChild(progressBar);
+
+        window.addEventListener("scroll", () => {
+          const article = document.querySelector(".article-content");
+          if (article) {
+            const articleTop = article.offsetTop;
+            const articleHeight = article.offsetHeight;
+            const scrollTop = window.pageYOffset;
+            const windowHeight = window.innerHeight;
+
+            const progress =
+              Math.min(
+                Math.max(
+                  (scrollTop - articleTop + windowHeight / 2) / articleHeight,
+                  0
+                ),
+                1
+              ) * 100;
+
+            progressBar.style.width = progress + "%";
+          }
+        });
+      }
+
+      // Inicializar progreso de lectura
+      setupReadingProgress();
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          // Crear instancia del cargador de componentes
+          const componentLoader = new ComponentLoader();
+
+          // Cargar layout estándar con mejor manejo de errores
+          await componentLoader.loadStandardLayout();
+
+          // Inicializar funcionalidades específicas de la página
+          initializePageFeatures();
+
+          console.log("✅ Página inicializada correctamente");
+        } catch (error) {
+          console.error("❌ Error al inicializar la página:", error);
+          showErrorFallback();
+        }
+      });
+    </script>
+
+    <style>
+      /* Estilos adicionales para el footer */
+      .custom-footer {
+        background: linear-gradient(135deg, #000 0%, #333 100%);
+        color: white;
+        padding: 40px 0 20px;
+        margin-top: auto;
+      }
+
+      .footer-social a {
+        color: white;
+        text-decoration: none;
+        width: 40px;
+        height: 40px;
+        background: var(--primary-red);
+        border-radius: 50%;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      .footer-social a:hover {
+        background: var(--light-red);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      /* Animaciones adicionales */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .article-content p {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+
+      /* Responsive mejorado */
+      @media (max-width: 576px) {
+        .container {
+          padding-left: 15px;
+          padding-right: 15px;
+        }
+
+        .nav-menu {
+          flex-wrap: wrap;
+          gap: 5px;
+        }
+
+        .nav-link-custom {
+          padding: 8px 12px;
+          font-size: 12px;
+        }
+
+        .share-section {
+          text-align: center;
+        }
+
+        .share-btn {
+          display: block;
+          margin: 8px auto;
+          max-width: 200px;
+        }
+      }
+    </style>
+
+  </body>
+</html>
