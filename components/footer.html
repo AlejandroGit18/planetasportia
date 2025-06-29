@@ -28,3 +28,149 @@
         </div>
     </div>
 </footer>
+
+<!-- Botón Scroll to Top -->
+<button id="scrollToTopBtn" class="scroll-to-top-btn" title="Ir arriba">
+    <i class="bi bi-arrow-up"></i>
+</button>
+
+<style>
+/* Estilos para el botón Scroll to Top */
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--primary-red, #ff0000);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.scroll-to-top-btn.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.scroll-to-top-btn:hover {
+    background: var(--dark-red, #cc0000);
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.4);
+}
+
+.scroll-to-top-btn:active {
+    transform: translateY(-1px) scale(1.05);
+}
+
+/* Animación del icono */
+.scroll-to-top-btn i {
+    transition: transform 0.2s ease;
+}
+
+.scroll-to-top-btn:hover i {
+    transform: translateY(-2px);
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .scroll-to-top-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .scroll-to-top-btn {
+        bottom: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+}
+
+/* Animación adicional para llamar la atención (opcional) */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(255, 0, 0, 0.5);
+    }
+    100% {
+        box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+    }
+}
+
+.scroll-to-top-btn.pulse {
+    animation: pulse 2s infinite;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    
+    // Mostrar/ocultar el botón según el scroll
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.add('show');
+        } else {
+            scrollToTopBtn.classList.remove('show');
+        }
+        
+        // Agregar efecto pulse cuando el usuario ha scrolleado mucho
+        if (window.pageYOffset > 1000) {
+            scrollToTopBtn.classList.add('pulse');
+        } else {
+            scrollToTopBtn.classList.remove('pulse');
+        }
+    });
+    
+    // Función de scroll suave al top
+    scrollToTopBtn.addEventListener('click', function() {
+        // Scroll suave hacia arriba
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        
+        // Pequeña vibración en dispositivos móviles (si está disponible)
+        if ('vibrate' in navigator) {
+            navigator.vibrate(50);
+        }
+        
+        // Efecto visual de click
+        scrollToTopBtn.style.transform = 'translateY(-1px) scale(0.95)';
+        setTimeout(() => {
+            scrollToTopBtn.style.transform = '';
+        }, 150);
+    });
+    
+    // Mejorar accesibilidad con teclado
+    scrollToTopBtn.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            scrollToTopBtn.click();
+        }
+    });
+});
+</script>
