@@ -81,9 +81,10 @@ body {
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
 .logo-container {
-  background: black; /* Fondo negro */
-  color: red;         /* Letras rojas */
+  background: black;
+  color: red;
   border-radius: 8px;
   padding: 10px 20px;
   transition: all 0.3s ease;
@@ -92,14 +93,17 @@ body {
   text-transform: uppercase;
   letter-spacing: 2px;
   font-size: 20px;
+  display: inline-block; /* Agregado para mejor control */
+  white-space: nowrap; /* Evita que el texto se divida */
 }
 
 .logo-container:hover {
-  background: #1a1a1a; /* Negro más claro para el hover */
+  background: #1a1a1a;
   color: red;
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
 }
+
 
 .nav-menu {
   gap: 8px;
@@ -320,10 +324,12 @@ body {
     font-size: 2.5rem;
   }
 
+  /* MODIFICACIÓN PRINCIPAL - Reemplaza el bloque existente del logo */
   .logo-container {
-    width: 100px;
-    height: 60px;
-    font-size: 16px;
+    padding: 8px 16px; /* Reducir padding */
+    font-size: 16px; /* Reducir tamaño de fuente */
+    letter-spacing: 1px; /* Reducir espaciado entre letras */
+    border-radius: 6px; /* Reducir border-radius */
   }
 
   .nav-link-custom {
@@ -331,6 +337,7 @@ body {
     font-size: 12px;
   }
 }
+
 /* Estilos para la sección "Lo Más Leído" */
 .mas-leido-section {
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
@@ -1072,4 +1079,265 @@ body {
 .estadisticas-sub-link:hover {
   background: linear-gradient(45deg, var(--primary-red), var(--light-red));
   box-shadow: 0 1px 4px rgba(255, 0, 0, 0.2);
+}
+
+/* AGREGAR ESTAS REGLAS AL FINAL DE TU ARCHIVO index.css */
+
+/* Responsive mejorado para artículos pequeños de "Lo Más Leído" */
+.mas-leido-small-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: flex-start; /* Cambio: alineación superior */
+  gap: 15px;
+}
+
+.mas-leido-small-card:hover {
+  background: rgba(255, 0, 0, 0.1);
+  border-color: var(--primary-red);
+  transform: translateX(10px);
+}
+
+.mas-leido-small-image {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(45deg, #333, #555);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0; /* Importante: evita que se reduzca */
+}
+
+.mas-leido-small-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mas-leido-small-content {
+  flex: 1; /* Ocupa el espacio restante */
+  min-width: 0; /* Permite que el texto se ajuste */
+}
+
+.mas-leido-small-content h5 {
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  line-height: 1.3;
+  word-wrap: break-word; /* Rompe palabras largas */
+}
+
+.mas-leido-small-content .mas-leido-small-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  flex-wrap: wrap; /* Permite salto de línea si es necesario */
+}
+
+.mas-leido-small-content .mas-leido-small-meta .author {
+  color: var(--primary-red);
+  font-weight: 600;
+}
+
+.mas-leido-small-content .mas-leido-small-meta .date {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Responsive mejorado para artículos pequeños de "Primera División" */
+.primera-division-sidebar-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+  display: flex;
+  align-items: flex-start; /* Cambio: alineación superior */
+  gap: 15px;
+}
+
+.primera-division-sidebar-card:hover {
+  background: #fff5f5;
+  border-color: var(--primary-red);
+  transform: translateX(8px);
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.1);
+}
+
+.primera-division-sidebar-image {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(45deg, #f8f9fa, #dee2e6);
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0; /* Importante: evita que se reduzca */
+}
+
+.primera-division-sidebar-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.primera-division-sidebar-content {
+  flex: 1; /* Ocupa el espacio restante */
+  min-width: 0; /* Permite que el texto se ajuste */
+}
+
+.primera-division-sidebar-content h5 {
+  color: #333;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  line-height: 1.3;
+  transition: color 0.3s ease;
+  word-wrap: break-word; /* Rompe palabras largas */
+}
+
+.primera-division-sidebar-card:hover h5 {
+  color: var(--primary-red);
+}
+
+.primera-division-sidebar-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  flex-wrap: wrap; /* Permite salto de línea si es necesario */
+}
+
+.primera-division-sidebar-meta .author {
+  color: var(--primary-red);
+  font-weight: 600;
+}
+
+.primera-division-sidebar-meta .date {
+  color: #6c757d;
+}
+
+/* RESPONSIVE ESPECÍFICO PARA MÓVILES */
+@media (max-width: 768px) {
+  
+  /* Artículos de "Lo Más Leído" en móvil */
+  .mas-leido-small-card {
+    flex-direction: column; /* Cambia a columna en móvil */
+    text-align: center;
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .mas-leido-small-image {
+    width: 100%; /* Ancho completo en móvil */
+    height: 120px;
+    align-self: center;
+  }
+
+  .mas-leido-small-content h5 {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .mas-leido-small-content .mas-leido-small-meta {
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  /* Artículos de "Primera División" en móvil */
+  .primera-division-sidebar-card {
+    flex-direction: column; /* Cambia a columna en móvil */
+    text-align: center;
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .primera-division-sidebar-image {
+    width: 100%; /* Ancho completo en móvil */
+    height: 120px;
+    align-self: center;
+  }
+
+  .primera-division-sidebar-content h5 {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .primera-division-sidebar-meta {
+    justify-content: center;
+    gap: 10px;
+  }
+}
+
+/* RESPONSIVE PARA TABLETS (768px - 992px) */
+@media (max-width: 992px) and (min-width: 769px) {
+  .logo-container {
+    padding: 9px 18px;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+  }
+}
+
+/* Para móviles medianos */
+@media (max-width: 576px) {
+  .logo-container {
+    padding: 6px 12px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    border-radius: 5px;
+  }
+}
+
+/* Para móviles muy pequeños */
+@media (max-width: 480px) {
+  .logo-container {
+    padding: 5px 10px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+  }
+}
+
+/* Para móviles extra pequeños */
+@media (max-width: 360px) {
+  .logo-container {
+    padding: 4px 8px;
+    font-size: 11px;
+    letter-spacing: 0.2px;
+    border-radius: 4px;
+  }
+}
+
+/* RESPONSIVE PARA PANTALLAS MUY PEQUEÑAS (menos de 480px) */
+@media (max-width: 480px) {
+  
+  .mas-leido-small-card {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+
+  .mas-leido-small-image {
+    height: 100px;
+  }
+
+  .mas-leido-small-content h5 {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .primera-division-sidebar-card {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+
+  .primera-division-sidebar-image {
+    height: 100px;
+  }
+
+  .primera-division-sidebar-content h5 {
+    font-size: 13px;
+    line-height: 1.2;
+  }
 }
